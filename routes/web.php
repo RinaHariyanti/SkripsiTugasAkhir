@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CriteriaController;
+use App\Http\Controllers\PesticideController;
+use App\Models\Criteria;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +26,33 @@ use App\Http\Controllers\HomeController;
 //     return view('home');
 // });
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::resource('pesticides', PesticideController::class)->names([
+    'index' => 'pesticides.home',
+    'create' => 'pesticides.create',
+    'store' => 'pesticides.store',
+    'show' => 'pesticides.show',
+    // 'edit' => 'pesticides.edit',
+    'update' => 'pesticides.update',
+    'destroy' => 'pesticides.destroy',
+]);
+
+Route::resource('criteria', CriteriaController::class)->names([
+    'index' => 'criteria.index',
+    'create' => 'criteria.create',
+    'store' => 'criteria.store',
+    'show' => 'criteria.show',
+    'edit' => 'criteria.edit',
+    'update' => 'criteria.update',
+    'destroy' => 'criteria.destroy',
+]);
+
+Route::get('/pesticides/{pesticide}/edit', [PesticideController::class, 'edit'])->name('pesticides.edit');
+
+
+Route::get('/dashboard', [PesticideController::class, 'index'])->name('pesticides.dashboard');
+Route::get('/manage-criteria', [CriteriaController::class, 'index'])->name('criteria.manage');
+
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
@@ -31,4 +60,4 @@ Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'postRegister'])->name('postRegister');
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

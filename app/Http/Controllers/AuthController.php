@@ -24,7 +24,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             // dd('Login successful!');
-            return redirect()->route('home')->with('success', 'Login successful!');
+            return redirect()->route('pesticides.home')->with('success', 'Login successful!');
         }
         return redirect()->route('login')->with('error', 'Login failed. Please check your credentials.');
     }
@@ -35,6 +35,7 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
+        $user->role = $request->role;
         $user->save();
         return redirect()->route('login')->with('success', 'Registration successful! Please login.');
     }
