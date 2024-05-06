@@ -13,7 +13,7 @@
                             <h4>Criteria List</h4>
                         </div>
                         <div class="col-3 text-right">
-                            <a href={{ route('pesticides.create') }} class="btn btn-primary">Add Criteria</a>
+                            <a href={{ route('criteria.create') }} class="btn btn-primary">Add Criteria</a>
                         </div>
                     </div>
                 </div>

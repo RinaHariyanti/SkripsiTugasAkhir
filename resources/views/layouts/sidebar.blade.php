@@ -30,12 +30,25 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
 
+        
+        @if($userLogin->role == 'admin')
+
+        <div class="sidebar-heading">
+            Calculate Result
+        </div>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('pesticides.dashboard') }}">
+                <i class="fas fa-fw fa-history"></i>
+                <span>History Users</span>
+            </a>
+        </li>
+
         <!-- Heading -->
         <div class="sidebar-heading">
             Pestisida
         </div>
 
-        <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('pesticides.dashboard') }}">
                 <i class="fas fa-fw fa-cog"></i>
@@ -43,7 +56,6 @@
             </a>
         </li>
 
-        {{-- <% if(currentUser){ %> --}}
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('pesticides.home') }}">
@@ -51,7 +63,6 @@
                     <span>Manage Data Pestisida</span>
                 </a>
             </li>
-            {{-- <% } %> --}}
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
@@ -67,9 +78,6 @@
                         <span>Show Data Kriteria</span></a>
                 </li>
 
-                
-
-                {{-- <% if(currentUser){ %> --}}
                     <!-- Nav Item - Pages Collapse Menu -->
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('criteria.manage') }}">
@@ -77,12 +85,34 @@
                             <span>Manage Data Kriteria</span>
                         </a>
                     </li>
-                    {{-- <% } %> --}}
+                @endif
 
+                @if($userLogin->role == 'admin')
                     <div class="sidebar-heading">
                         Other
                     </div>
+                @else
+                    <div class="sidebar-heading">
+                        Calculate
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/compare/criteria">
+                            <i class="fas fa-fw fa-calculator"></i>
+                            <span>Calculate Criteria</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/compare/alternatives/0">
+                            <i class="fas fa-fw fa-chart-bar"></i>
+                            <span>Calculate Alternatif</span>
+                        </a>                        
+                    </li>
+                @endif
 
+                @if($userLogin->role == 'user')
+                <div class="sidebar-heading">
+                    Other
+                </div>
+                @endif
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">
                             <i class="fas fa-fw fa-chart-area"></i>
@@ -97,15 +127,7 @@
                         <div class="text-center d-none d-md-inline">
                             <button class="rounded-circle border-0" id="sidebarToggle"></button>
                         </div>
-
-                  
-
-
-
-
-
-
-    </ul>
+        </ul>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -135,11 +157,12 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @if($userLogin->role == 'admin')
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $userLogin->name }}</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ ucfirst($userLogin->name) }}</span>
                                 @else
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Guest</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ ucfirst($userLogin->name) }}</span>
+
                                 @endif
-                                        <img class="img-profile rounded-circle" src="/img/undraw_profile.svg">
+                                        <img class="img-profile rounded-circle " src="/img/undraw_profile.svg">
                         </a>
 
                         <!-- Dropdown - User Information -->

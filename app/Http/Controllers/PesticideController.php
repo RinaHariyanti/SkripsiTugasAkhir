@@ -26,7 +26,7 @@ class PesticideController extends Controller
         // $pesticides = Pesticide::with('criterias')->get();
         $pesticides = Pesticide::whereHas('criterias')->with('criterias')->get();
 
-        // Log::info('Pesticidesssss: ' . $request->user()->role);
+        Log::info('Pesticidesssss: ' . $request->user()->role);
 
         $response = [];
         foreach ($pesticides as $pesticide) {

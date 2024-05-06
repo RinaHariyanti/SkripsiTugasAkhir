@@ -38,6 +38,11 @@ class CriteriaController extends Controller
         return view('criteria.edit', compact('criterion'));
     }
 
+    public function create()
+    {
+        return view('criteria.create');
+    }
+
     public function store(Request $request)
     {
         $request->validate([

@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\PesticideController;
-use App\Models\Criteria;
+use App\Http\Controllers\ComparisonAlternatifController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,9 +26,15 @@ use App\Models\Criteria;
 //     return view('home');
 // });
 
+
+Route::get('/compare/alternatives/{id}', [ComparisonAlternatifController::class, 'index'])->name('compare.alternatives');
+Route::post('/compare/alternatives/show/{id}', [ComparisonAlternatifController::class, 'storeComparisonAlternatif'])->name('compare.storeComparisonAlternatif');
+
 Route::get('/compare/criteria', [HomeController::class, 'index'])->name('compare.criteria');
 Route::post('/compare/criteria', [HomeController::class, 'storeComparison'])->name('compare.storeComparison');
 Route::get('/compare/criteria/{group_id}', [HomeController::class, 'show'])->name('compare.show');
+
+Route::get('/compare/results', [ComparisonAlternatifController::class, 'rankResult'])->name('results.show');
 
 Route::resource('pesticides', PesticideController::class)->names([
     'index' => 'pesticides.home',
