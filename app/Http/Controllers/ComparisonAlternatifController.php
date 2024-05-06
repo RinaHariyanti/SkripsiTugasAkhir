@@ -11,6 +11,8 @@ use App\Models\Criteria;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Stmt\Return_;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Cache;
 
 class ComparisonAlternatifController extends Controller
 {
@@ -46,26 +48,117 @@ class ComparisonAlternatifController extends Controller
         return view('comparisonAlternatif.formCompare', compact('alternatives', 'firstCriteriaName', 'index', 'criteriaNames'));
     }
 
+    // public function storeComparisonAlternatif(Request $request, $index)
+    // {
+    //     $comparisonData = $request->comparison;
+    //     $criteriaNames = Pesticide::all()->pluck('name');
+    //     $criteriaMatrix = $this->buildCriteriaMatrix($comparisonData, $criteriaNames);
+    //     $consistency = $this->calculateConsistency($criteriaMatrix, $criteriaNames);
+    //     $nextIndex = $index + 1;
+    //     // $index = intval($index);
+    //     DB::transaction((function () use ($criteriaNames, $criteriaMatrix, $consistency, $index) {
+    //         $group_id = ComparisonMatrix::max('group_id') + 1;
+    //         ComparisonAlternatif::create([
+    //             'criteria_name' => json_encode($criteriaNames),
+    //             'comparison_data' => json_encode($criteriaMatrix),
+    //             'eigenvector' => json_encode($consistency['normalizedVector']),
+    //             'criteria_id' => $index,
+    //             'group_id' => $group_id,
+    //         ]);
+    //     }));
+
+    //     return view('comparisonAlternatif.comparisonAlternatifShow', $consistency, compact('nextIndex'));
+    // }
+
+    // public function storeComparisonAlternatif(Request $request, $index)
+    // {
+    //     $comparisonData = $request->comparison;
+    //     $criteriaNames = Pesticide::all()->pluck('name');
+    //     $criteriaMatrix = $this->buildCriteriaMatrix($comparisonData, $criteriaNames);
+    //     $consistency = $this->calculateConsistency($criteriaMatrix, $criteriaNames);
+    //     $nextIndex = $index + 1;
+
+    //     // Get the current comparison data from cookies
+    //     $cookieName = 'comparison_data_' . $index;
+    //     $comparisonCookie = Cookie::get($cookieName);
+
+    //     // Merge the new comparison data with the existing data
+    //     $mergedData = array_merge($comparisonCookie ?? [], $criteriaMatrix);
+
+    //     // Store the merged comparison data in cookies
+    //     Cookie::queue($cookieName, $mergedData);
+
+    //     // Check if it's the final index
+    //     if ($nextIndex == count($criteriaNames)) {
+    //         // Save all comparison data to the database in a single transaction
+    //         DB::transaction(function () use ($criteriaNames, $mergedData, $consistency) {
+    //             $group_id = ComparisonMatrix::max('group_id');
+    //             ComparisonMatrix::create([
+    //                 'criteria_name' => json_encode($criteriaNames),
+    //                 'comparison_data' => json_encode($mergedData),
+    //                 'eigenvector' => json_encode($consistency['normalizedVector']),
+    //                 'group_id' => $group_id,
+    //             ]);
+    //         });
+    //     }
+
+    //     return view('comparison', $consistency, compact('nextIndex'));
+    // }
+
     public function storeComparisonAlternatif(Request $request, $index)
     {
         $comparisonData = $request->comparison;
         $criteriaNames = Pesticide::all()->pluck('name');
+        $criteriaCompare = Criteria::all()->pluck('name');
         $criteriaMatrix = $this->buildCriteriaMatrix($comparisonData, $criteriaNames);
         $consistency = $this->calculateConsistency($criteriaMatrix, $criteriaNames);
-        $nextIndex = $index + 1;
-        // $index = intval($index);
-        DB::transaction((function () use ($criteriaNames, $criteriaMatrix, $consistency, $index) {
-            $group_id = ComparisonMatrix::max('group_id') + 1;
-            ComparisonAlternatif::create([
-                'criteria_name' => json_encode($criteriaNames),
-                'comparison_data' => json_encode($criteriaMatrix),
-                'eigenvector' => json_encode($consistency['normalizedVector']),
-                'criteria_id' => $index,
-                'group_id' => $group_id,
-            ]);
-        }));
 
-        return view('comparisonAlternatif.comparisonAlternatifShow', $consistency, compact('nextIndex'));
+        // Store comparison data in cache
+        $cacheKey = 'comparison_data_' . $index;
+        Cache::put($cacheKey, $consistency, now()->addHours(1)); // Adjust the cache expiration time as needed
+
+        Log::info('Comparison data stored in cache', ['cacheKey' => $cacheKey]);
+
+        $nextIndex = $index + 1;
+
+        // Redirect to the next index or final submission page
+        if ($nextIndex < count($criteriaCompare)) {
+            return view('comparisonAlternatif.comparisonAlternatifShow', $consistency, compact('nextIndex'));
+        } else {
+            $mergedData = [];
+            for ($i = 0; $i < count($criteriaCompare); $i++) {
+                $cacheKey = 'comparison_data_' . $i;
+                $data = Cache::get($cacheKey);
+                if ($data) {
+                    $mergedData[] = $data;
+                    Cache::forget($cacheKey);
+                }
+            }
+            // dd($mergedData);
+            // Start database transaction
+            DB::beginTransaction();
+            try {
+                // dd($mergedData);
+                foreach ($mergedData as $index => $data) {
+                    $group_id = ComparisonMatrix::max('group_id');
+                    ComparisonAlternatif::create([
+                        'criteria_name' => json_encode($data['criteriaNames']),
+                        'comparison_data' => json_encode($data['criteriaMatrix']),
+                        'eigenvector' => json_encode($data['normalizedVector']),
+                        'criteria_id' => $index,
+                        'group_id' => $group_id,
+                    ]);
+                }
+                DB::commit(); // Commit transaction
+            } catch (\Exception $e) {
+                DB::rollback(); // Rollback transaction on error
+                // Handle error
+                return back()->withError('Failed to save data. Please try again.');
+            }
+
+            // Redirect to success page
+            return redirect()->route('comparison.success');
+        }
     }
 
     protected function buildCriteriaMatrix($comparisonData, $criteriaNames)
