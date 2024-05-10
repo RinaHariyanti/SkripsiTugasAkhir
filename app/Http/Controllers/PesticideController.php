@@ -42,7 +42,7 @@ class PesticideController extends Controller
                 }),
             ];
         }
-        if ($request->is('pesticides')) {
+        if ($request->is('admin/pesticides')) {
             return view('pesticides.manage_pesticides', compact('response'));
         } else {
             return view('pesticides.index', compact('response'));
@@ -77,8 +77,6 @@ class PesticideController extends Controller
             $criterion = Criteria::findOrFail($criteria['id']);
             $pesticide->criterias()->attach($criterion->id, ['description' => $criteria['description']]);
         }
-
-        Log::info('Pesticide: ' . $pesticide);
 
         // return response()->json($pesticide, 201);
         return redirect()->route('pesticides.home')->with('success', 'Pesticide created successfully');

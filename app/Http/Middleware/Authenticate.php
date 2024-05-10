@@ -18,13 +18,12 @@ class Authenticate extends Middleware
         return $request->expectsJson() ? null : route('login');
     }
 
-    // public function handle($request, Closure $next, ...$guards)
-    // {
-    //     // Jika pengguna terotentikasi, tambahkan informasi pengguna ke dalam objek request
-    //     if (Auth::check()) {
-    //         Log::info('User authenticated: ' . Auth::user());
-    //     }
+    public function handle($request, Closure $next, ...$guards)
+    {
+        if (Auth::guard('web')->check()) {
+            return $next($request);
+        }
 
-    //     return $next($request);
-    // }
+        return redirect()->route('login')->with('error', 'You are not authorized to access this page');
+    }
 }
