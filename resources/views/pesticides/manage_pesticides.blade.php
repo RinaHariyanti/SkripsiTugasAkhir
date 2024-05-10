@@ -2,19 +2,20 @@
 @include('layouts.sidebar')
 @section('content')
 <div id="content">
-    <div class="container-fluid">
+    <div class="container-fluid mt-4">
         <div class="row mb-3">
-            <div class="col-9">
-                <h1 class="h3 mb-2 text-gray-800">List of Pesticides</h1>
-            </div>
-            <div class="col-3 text-right">
-                <a href={{ route('pesticides.create') }} class="btn btn-primary">Add Pesticide</a>
-            </div>
-        </div>
-        
         @include('layouts.messages')
         <div class="card shadow mb-4">
             <div class="card-body">
+                <div class="header row mb-3">
+                    <div class="col">
+                        <h4><strong>List of Pesticides</strong></h4>
+                    </div>
+                    <div class="col text-right">
+                        <a href={{ route('pesticides.create') }} class="btn btn-primary">Add Pesticide</a>
+                    </div>
+                </div>
+                
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>

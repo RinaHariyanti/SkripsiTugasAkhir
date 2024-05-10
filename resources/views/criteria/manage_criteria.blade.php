@@ -1,11 +1,12 @@
 @extends('layouts.app')
 @include('layouts.sidebar')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
+<div class="container-fluid" style="background-image: url('img/background.jpg'); background-size: cover; height: 100vh; position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);"></div>
+    <div class="row justify-content-center" >
+        <div class="col-md-8 mt-5">
             @include('layouts.messages')
-            <div class="card">
+            <div class="card" style="background-color: rgba(255, 255, 255, 0.9);">
                 <div class="card-header">
 
                     <div class="row">

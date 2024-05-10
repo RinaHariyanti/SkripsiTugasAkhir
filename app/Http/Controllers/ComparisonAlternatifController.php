@@ -6,12 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\ComparisonAlternatif;
 use App\Models\ComparisonMatrix;
 use App\Models\Pesticide;
+use App\Models\PesticideCriteria;
 use Illuminate\Support\Facades\DB;
 use App\Models\Criteria;
-use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Log;
-use PhpParser\Node\Stmt\Return_;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Cache;
 
 class ComparisonAlternatifController extends Controller
@@ -20,6 +18,60 @@ class ComparisonAlternatifController extends Controller
     {
         $this->middleware('auth');
     }
+
+    public function userHistory()
+    {
+        $comparisonAlternatif = DB::table('comparison_alternatifs')
+            ->join('users', 'comparison_alternatifs.user_id', '=', 'users.id')
+            ->select('comparison_alternatifs.group_id', 'users.name', 'users.email', DB::raw('MAX(comparison_alternatifs.created_at) AS created_at'))
+            ->groupBy('comparison_alternatifs.group_id', 'users.name', 'users.email')
+            ->get();
+
+
+        // dd($comparisonAlternatif);
+        $formattedData = [];
+        foreach ($comparisonAlternatif as $data) {
+            $formattedData[] = [
+                'group_id' => $data->group_id,
+                'spk_code' => 'SPK-' . $data->group_id,
+                'user' => $data->name,
+                'email' => $data->email,
+                'created_at' => $data->created_at
+            ];
+        }
+
+        // return response()->json($formattedData);
+        return view('user.rank', compact('formattedData'));
+    }
+
+    public function userLatestHistory()
+    {
+        $comparisonAlternatif = DB::table('comparison_alternatifs')
+            ->join('users', 'comparison_alternatifs.user_id', '=', 'users.id')
+            ->select('comparison_alternatifs.group_id', 'users.name', 'users.email', DB::raw('MAX(comparison_alternatifs.created_at) AS created_at'))
+            ->groupBy('comparison_alternatifs.group_id', 'users.name', 'users.email')
+            ->where('comparison_alternatifs.user_id', auth()->user()->id)
+            ->where('comparison_alternatifs.group_id', ComparisonAlternatif::max('group_id'))
+            ->get();
+
+
+        // dd($comparisonAlternatif);
+        $formattedData = [];
+        foreach ($comparisonAlternatif as $data) {
+            $formattedData[] = [
+                'group_id' => $data->group_id,
+                'spk_code' => 'SPK-' . $data->group_id,
+                'user' => $data->name,
+                'email' => $data->email,
+                'created_at' => $data->created_at
+            ];
+        }
+
+        // return response()->json($formattedData);
+        // return view('user.rank', compact('formattedData'));
+        return redirect('/compare/results/' . ComparisonAlternatif::max('group_id'));
+    }
+
 
     public function show($group_id)
     {
@@ -44,8 +96,11 @@ class ComparisonAlternatifController extends Controller
         if ($index === count($criteriaNames)) {
             return redirect()->route('pesticides.home')->with('success', 'All criteria have been compared');
         }
+
+        $detailsCriteria = PesticideCriteria::where('criteria_id', $index + 1)->get();
+        // dd(json_decode($details));
         $alternatives = Pesticide::all()->pluck('name');
-        return view('comparisonAlternatif.formCompare', compact('alternatives', 'firstCriteriaName', 'index', 'criteriaNames'));
+        return view('comparisonAlternatif.formCompare', compact('alternatives', 'firstCriteriaName', 'index', 'criteriaNames', 'detailsCriteria'));
     }
 
     // public function storeComparisonAlternatif(Request $request, $index)
@@ -125,20 +180,32 @@ class ComparisonAlternatifController extends Controller
         if ($nextIndex < count($criteriaCompare)) {
             return view('comparisonAlternatif.comparisonAlternatifShow', $consistency, compact('nextIndex'));
         } else {
+            $criteria_data = null;
             $mergedData = [];
             for ($i = 0; $i < count($criteriaCompare); $i++) {
                 $cacheKey = 'comparison_data_' . $i;
+                $chacheData = Cache::get('comparison_criteria_data_temp');
                 $data = Cache::get($cacheKey);
-                if ($data) {
+                if ($data && $chacheData) {
+                    $criteria_data = $chacheData;
                     $mergedData[] = $data;
                     Cache::forget($cacheKey);
                 }
             }
-            // dd($mergedData);
+            // dd($criteria_data);
             // Start database transaction
             DB::beginTransaction();
             try {
                 // dd($mergedData);
+                ComparisonMatrix::create([
+                    'criteria_name' => json_encode($criteria_data['criteria_name']),
+                    'comparison_data' => json_encode($criteria_data['comparison_data']),
+                    'eigenvector' => json_encode($criteria_data['eigenvector']),
+                    'group_id' => json_decode($criteria_data['group_id'])
+                ]);
+                // Log::info($criteria_data[0]['group_id']);
+                // Log::info('Comparison data stored in database' . ['group_id' => $criteria_data['group_id']]);
+
                 foreach ($mergedData as $index => $data) {
                     $group_id = ComparisonMatrix::max('group_id');
                     ComparisonAlternatif::create([
@@ -147,17 +214,20 @@ class ComparisonAlternatifController extends Controller
                         'eigenvector' => json_encode($data['normalizedVector']),
                         'criteria_id' => $index,
                         'group_id' => $group_id,
+                        'user_id' => $request->user()->id
                     ]);
                 }
+
                 DB::commit(); // Commit transaction
             } catch (\Exception $e) {
                 DB::rollback(); // Rollback transaction on error
+                Log::error('Failed to save data', ['error' => $e->getMessage()]);
                 // Handle error
                 return back()->withError('Failed to save data. Please try again.');
             }
-
+            // dd($criteria_data, $mergedData);
             // Redirect to success page
-            return redirect()->route('comparison.success');
+            return redirect('/compare/results/' . $group_id)->with('success', 'Comparison data has been saved successfully');
         }
     }
 
@@ -199,11 +269,15 @@ class ComparisonAlternatifController extends Controller
         $normalizedVector = $this->calculateNormalizedVector($squaredMatrix);
         $consistency['normalizedVector'] = $normalizedVector;
 
-        $totalEigenvector = array_sum($normalizedVector);
-        $CI = $this->calculateCI($totalEigenvector, $criteriaMatrix);
+        // $totalEigenvector = array_sum($normalizedVector);
+        $totalLambda = 0;
+        for ($i = 0; $i < count($consistency['columnSums']); $i++) {
+            $totalLambda += $normalizedVector[$i] * $consistency['columnSums'][$i];
+        }
+        $CI = $this->calculateCI($totalLambda, $criteriaMatrix);
         $CR = $this->calculateCR($CI, $criteriaMatrix);
 
-        $consistency['totalEigenvector'] = $totalEigenvector;
+        $consistency['totalEigenvector'] = $totalLambda;
         $consistency['CI'] = $CI;
         $consistency['CR'] = $CR;
 
@@ -224,6 +298,7 @@ class ComparisonAlternatifController extends Controller
         }
         return $squaredMatrix;
     }
+
     protected function calculateNormalizedVector($squaredMatrix)
     {
         $rowSums = array_map('array_sum', $squaredMatrix);
@@ -252,10 +327,8 @@ class ComparisonAlternatifController extends Controller
         }
     }
 
-    protected function rankResult()
+    protected function rankResult($group_id)
     {
-        // Mendapatkan group_id terakhir
-        $group_id = 3;
 
         // Mendapatkan data perbandingan kriteria dan alternatif
         $comparisonCriteria = ComparisonMatrix::where('group_id', $group_id)->first();
@@ -356,6 +429,7 @@ class ComparisonAlternatifController extends Controller
             ];
         }
 
+
         $finalResult = [];
         for ($i = 0; $i < count($namesArrayBenefit); $i++) {
             if ($combinedDataCost[$i]['Name'] == $combinedDataBenefit[$i]['Name']) {
@@ -366,6 +440,7 @@ class ComparisonAlternatifController extends Controller
             }
         }
 
+        // dd($finalResult);
         // Sort combined data based on sumResult
         usort($finalResult, function ($a, $b) {
             return $b['Data'] <=> $a['Data'];

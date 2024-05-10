@@ -60,12 +60,19 @@ class AHP
     {
         $squaredMatrix = $this->calculateSquaredMatrix();
         $this->printSquaredMatrix($squaredMatrix);
+        $columnSums = array_map('array_sum', array_map(null, ...$this->criteriaMatrix));
 
         $normalizedVector = $this->calculateNormalizedVector($squaredMatrix);
         $this->printEigenvector($normalizedVector);
+        $totalLamba = 0;
+        foreach ($columnSums as $i => $sum) {
+            $totalLamba += $sum * $normalizedVector[$i];
+        }
+
+        echo "\nTotal Lambdaaaaaaaaaa: " . number_format($totalLamba, 4);
 
         $totalEigenvector = array_sum($normalizedVector); // Hitung total eigenvector
-        $CI = $this->calculateCI($totalEigenvector); // Gunakan total eigenvector untuk menghitung CI
+        $CI = $this->calculateCI($totalLamba); // Gunakan total eigenvector untuk menghitung CI
         $CR = $this->calculateCR($CI);
 
         echo "\nLambda Max: " . number_format($totalEigenvector, 4);
@@ -141,6 +148,7 @@ class AHP
     protected function calculateCI($totalEigenvector)
     {
         $n = count($this->criteriaMatrix);
+        echo "\nNNNNNNNNNNNN: " . number_format($totalEigenvector, 4);
         return ($totalEigenvector - $n) / ($n - 1);
     }
 

@@ -52,7 +52,8 @@ class CriteriaController extends Controller
 
         $criteria = Criteria::create($request->all());
 
-        return response()->json($criteria, 201);
+        // return response()->json($criteria, 201);
+        return redirect()->route('criteria.index')->with('success', 'Criteria created successfully');
     }
 
     public function update(Request $request, $id)

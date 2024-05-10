@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Criteria;
 use App\Models\ComparisonMatrix;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -46,16 +46,25 @@ class HomeController extends Controller
         $criteriaNames = Criteria::all()->pluck('name');
         $criteriaMatrix = $this->buildCriteriaMatrix($comparisonData, $criteriaNames);
         $consistency = $this->calculateConsistency($criteriaMatrix, $criteriaNames);
+        $cacheKey = 'comparison_criteria_data_temp';
 
-        DB::transaction((function () use ($criteriaNames, $criteriaMatrix, $consistency) {
-            $group_id = ComparisonMatrix::max('group_id') + 1;
-            ComparisonMatrix::create([
-                'criteria_name' => json_encode($criteriaNames),
-                'comparison_data' => json_encode($criteriaMatrix),
-                'eigenvector' => json_encode($consistency['normalizedVector']),
-                'group_id' => $group_id,
-            ]);
-        }));
+        $group_id = ComparisonMatrix::max('group_id') + 1;
+        Cache::put($cacheKey, [
+            'criteria_name' => $criteriaNames,
+            'comparison_data' => $criteriaMatrix,
+            'eigenvector' => $consistency['normalizedVector'],
+            'group_id' => $group_id,
+        ], now()->addHours(1));
+
+        // DB::transaction((function () use ($criteriaNames, $criteriaMatrix, $consistency) {
+        //     $group_id = ComparisonMatrix::max('group_id') + 1;
+        //     ComparisonMatrix::create([
+        //         'criteria_name' => json_encode($criteriaNames),
+        //         'comparison_data' => json_encode($criteriaMatrix),
+        //         'eigenvector' => json_encode($consistency['normalizedVector']),
+        //         'group_id' => $group_id,
+        //     ]);
+        // }));
 
         return view('comparison', $consistency);
     }
@@ -124,11 +133,15 @@ class HomeController extends Controller
         $normalizedVector = $this->calculateNormalizedVector($squaredMatrix);
         $consistency['normalizedVector'] = $normalizedVector;
 
-        $totalEigenvector = array_sum($normalizedVector);
-        $CI = $this->calculateCI($totalEigenvector, $criteriaMatrix);
+        // $totalEigenvector = array_sum($normalizedVector);
+        $totalLambda = 0;
+        for ($i = 0; $i < count($consistency['columnSums']); $i++) {
+            $totalLambda += $normalizedVector[$i] * $consistency['columnSums'][$i];
+        }
+        $CI = $this->calculateCI($totalLambda, $criteriaMatrix);
         $CR = $this->calculateCR($CI, $criteriaMatrix);
 
-        $consistency['totalEigenvector'] = $totalEigenvector;
+        $consistency['totalEigenvector'] = $totalLambda;
         $consistency['CI'] = $CI;
         $consistency['CR'] = $CR;
 

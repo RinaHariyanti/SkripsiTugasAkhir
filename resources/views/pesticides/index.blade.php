@@ -1,11 +1,14 @@
 @extends('layouts.app')
 @include('layouts.sidebar')
 @section('content')
-<div id="content">
-    <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">List of Pesticides</h1>
+
+<div id="content mt-5">
+    <div class="container-fluid mt-4">
         <div class="card shadow mb-4">
             <div class="card-body">
+                <div class="header">
+                    <h4><strong>List of Pesticides</strong></h4>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>

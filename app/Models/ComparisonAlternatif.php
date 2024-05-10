@@ -15,10 +15,16 @@ class ComparisonAlternatif extends Model
         'criteria_id',
         'group_id',
         'eigenvector',
+        'user_id',
     ];
 
     protected $casts = [
         'criteria_name' => 'array',
         'comparison_data' => 'array',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

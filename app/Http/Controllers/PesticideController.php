@@ -80,7 +80,8 @@ class PesticideController extends Controller
 
         Log::info('Pesticide: ' . $pesticide);
 
-        return response()->json($pesticide, 201);
+        // return response()->json($pesticide, 201);
+        return redirect()->route('pesticides.home')->with('success', 'Pesticide created successfully');
     }
 
 

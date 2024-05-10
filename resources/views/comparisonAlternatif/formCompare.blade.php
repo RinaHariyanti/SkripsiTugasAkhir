@@ -36,9 +36,16 @@
                                     @foreach ($alternatives as $innerIndex => $innerName)
                                         @if ($outerIndex < $innerIndex)
                                             <tr>
-                                                <td>{{ $outerName }}</td>
+                                                <td> <strong>{{ $outerName }}</strong>
+                                                    <div>
+                                                    <span> {{ $detailsCriteria[$outerIndex]->description }}</span>
+                                                    </div>
+                                                </td>
                                                 <td id="priority_{{ $outerIndex }}_{{ $innerIndex }}">Sama pentingnya</td>
-                                                <td>{{ $innerName }}</td>
+                                                <td> <strong>{{ $innerName }}</strong>
+                                                    <div>
+                                                    <span> {{ $detailsCriteria[$innerIndex]->description }}</span>
+                                                    </div>
                                                 <td>
                                                     <div class="form-group">
                                                         <label for="comparison_{{ $outerIndex }}_{{ $innerIndex }}">Perbandingan</label>

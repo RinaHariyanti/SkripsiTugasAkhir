@@ -24,7 +24,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             // dd('Login successful!');
-            return redirect()->route('pesticides.home')->with('success', 'Login successful!');
+            return redirect()->route('pesticides.dashboard')->with('success', 'Login successful!');
         }
         return redirect()->route('login')->with('error', 'Login failed. Please check your credentials.');
     }
