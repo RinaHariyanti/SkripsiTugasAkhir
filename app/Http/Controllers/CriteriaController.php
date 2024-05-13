@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Criteria;
+use App\Models\Pesticide;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCriteriaRequest;
 use App\Http\Requests\UpdateCriteriaRequest;
+use Illuminate\Support\Facades\Log;
 
 class CriteriaController extends Controller
 {
@@ -13,9 +15,11 @@ class CriteriaController extends Controller
     {
         $criteria = Criteria::all();
         // return response()->json($criteria);
-        if (request()->is('criteria')) {
+        if (request()->is('admin/criteria')) {
+            Log::info('admin');
             return view('criteria.index', compact('criteria'));
         } else {
+            Log::info('user');
             return view('criteria.manage_criteria', compact('criteria'));
         }
     }
@@ -52,9 +56,17 @@ class CriteriaController extends Controller
 
         $criteria = Criteria::create($request->all());
 
-        // return response()->json($criteria, 201);
+        // Get all pesticides
+        $pesticides = Pesticide::all();
+
+        // Attach the newly created criteria to all pesticides with default value null
+        foreach ($pesticides as $pesticide) {
+            $pesticide->criterias()->attach($criteria, ['description' => '']);
+        }
+
         return redirect()->route('criteria.index')->with('success', 'Criteria created successfully');
     }
+
 
     public function update(Request $request, $id)
     {
