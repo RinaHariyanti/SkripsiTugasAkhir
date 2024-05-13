@@ -19,7 +19,7 @@
                 
                 </div>
                 <div class="card-body">
-                    <form action="/compare/alternatives/show/{{ $index }}" method="POST">
+                    <form action="/user/compare/alternatives/show/{{ $index }}" method="POST">
                         @csrf
 
                         <table class="table" id="comparisonTable">

@@ -118,7 +118,7 @@
                             Nilai CR lebih dari 10%, penilaian data judgment harus diperbaiki.
                         @endif
                     </div>
-                    <button class="btn btn-primary" onclick="window.location.href='/compare/alternatives/{{ $nextIndex }}'">Next</button>
+                    <button class="btn btn-primary" onclick="window.location.href='/user/compare/alternatives/{{ $nextIndex }}'">Next</button>
                 </div>
             </div>
             

@@ -96,12 +96,12 @@
                         Calculate
                     </div>
                     <li class="nav-item">
-                        <a class="nav-link" href="/compare/criteria">
+                        <a class="nav-link" href={{ route('compare.criteria') }}>
                             <i class="fas fa-fw fa-calculator"></i>
                             <span>Calculate Criteria</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/compare/alternatives/0">
+                        <a class="nav-link" href="/user/compare/alternatives/0">
                             <i class="fas fa-fw fa-chart-bar"></i>
                             <span>Calculate Alternatif</span>
                         </a>                        

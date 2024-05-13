@@ -69,7 +69,7 @@ class ComparisonAlternatifController extends Controller
 
         // return response()->json($formattedData);
         // return view('user.rank', compact('formattedData'));
-        return redirect('/compare/results/' . ComparisonAlternatif::max('group_id'));
+        return redirect('/user/compare/results/' . ComparisonAlternatif::max('group_id'));
     }
 
 
@@ -227,7 +227,7 @@ class ComparisonAlternatifController extends Controller
             }
             // dd($criteria_data, $mergedData);
             // Redirect to success page
-            return redirect('/compare/results/' . $group_id)->with('success', 'Comparison data has been saved successfully');
+            return redirect('/user/compare/results/' . $group_id)->with('success', 'Comparison data has been saved successfully');
         }
     }
 
