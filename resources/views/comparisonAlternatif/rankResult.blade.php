@@ -10,6 +10,7 @@
                     <div class="header">
                         <h4><strong>Final Result</strong></h4>
                     </div>
+                    @if (count($finalResult) > 0)
                     <table class="table table-bordered table-striped">
                         <thead class="bg-light">
                             <tr>
@@ -33,6 +34,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                    @else
+                    <p>No final result data available.</p>
+                    @endif
                 </div>
             </div>
             

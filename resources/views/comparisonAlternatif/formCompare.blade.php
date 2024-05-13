@@ -38,13 +38,14 @@
                                             <tr>
                                                 <td> <strong>{{ $outerName }}</strong>
                                                     <div>
-                                                    <span> {{ $detailsCriteria[$outerIndex]->description }}</span>
+                                                        <span>{{ $detailsCriteria[$outerIndex]['description'] }}</span>
+                                                    </div>
                                                     </div>
                                                 </td>
                                                 <td id="priority_{{ $outerIndex }}_{{ $innerIndex }}">Sama pentingnya</td>
                                                 <td> <strong>{{ $innerName }}</strong>
                                                     <div>
-                                                    <span> {{ $detailsCriteria[$innerIndex]->description }}</span>
+                                                        <span>{{ $detailsCriteria[$innerIndex]['description'] }}</span>
                                                     </div>
                                                 <td>
                                                     <div class="form-group">

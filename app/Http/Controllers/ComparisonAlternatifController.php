@@ -69,7 +69,11 @@ class ComparisonAlternatifController extends Controller
 
         // return response()->json($formattedData);
         // return view('user.rank', compact('formattedData'));
-        return redirect('/user/compare/results/' . ComparisonAlternatif::max('group_id'));
+        if (count($formattedData) > 0) {
+            return redirect('/user/compare/results/' . $formattedData[0]['group_id']);
+        } else {
+            return redirect('/user/compare/criteria')->with('error', 'Does not have any comparison data');
+        }
     }
 
 
@@ -97,7 +101,7 @@ class ComparisonAlternatifController extends Controller
             return redirect()->route('pesticides.home')->with('success', 'All criteria have been compared');
         }
 
-        $detailsCriteria = PesticideCriteria::where('criteria_id', $index + 1)->get();
+        $detailsCriteria = PesticideCriteria::where('criteria_id', $criteriaNames[$index]->id)->get();
         // dd(json_decode($details));
         $alternatives = Pesticide::all()->pluck('name');
         return view('comparisonAlternatif.formCompare', compact('alternatives', 'firstCriteriaName', 'index', 'criteriaNames', 'detailsCriteria'));
@@ -175,7 +179,7 @@ class ComparisonAlternatifController extends Controller
         Log::info('Comparison data stored in cache', ['cacheKey' => $cacheKey]);
 
         $nextIndex = $index + 1;
-
+        Log::info('Next index' . $nextIndex .  count($criteriaCompare));
         // Redirect to the next index or final submission page
         if ($nextIndex < count($criteriaCompare)) {
             return view('comparisonAlternatif.comparisonAlternatifShow', $consistency, compact('nextIndex'));
@@ -445,6 +449,7 @@ class ComparisonAlternatifController extends Controller
         usort($finalResult, function ($a, $b) {
             return $b['Data'] <=> $a['Data'];
         });
+        Log::info($finalResult);
 
         return view('comparisonAlternatif.rankResult', compact('finalResult', 'combinedDataBenefit', 'combinedDataCost'));
     }
