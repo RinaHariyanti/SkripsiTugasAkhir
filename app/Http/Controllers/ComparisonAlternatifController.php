@@ -88,13 +88,11 @@ class ComparisonAlternatifController extends Controller
     public function index($index)
     {
         $criteriaNames = Criteria::all(['id', 'name']);
-        Log::info('Criteria Names: ' .  count($criteriaNames) . "Index: " . $index);
         if ($index <= count($criteriaNames) - 1) {
             $firstCriteriaName = $criteriaNames[$index]->name;
         }
 
         $index = intval($index);
-        Log::info('Criteria Names: ' .  count($criteriaNames) . "Index: " . $index);
         if ($index === count($criteriaNames)) {
             return redirect()->route('pesticides.home')->with('success', 'All criteria have been compared');
         }
