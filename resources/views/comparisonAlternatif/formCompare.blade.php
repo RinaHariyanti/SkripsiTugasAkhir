@@ -34,19 +34,19 @@
                             <tbody>
                                 @foreach ($alternatives as $outerIndex => $outerName)
                                     @foreach ($alternatives as $innerIndex => $innerName)
-                                        @if ($outerIndex < $innerIndex)
+                                        @if ($outerIndex != $innerIndex)
                                             <tr>
                                                 <td> <strong>{{ $outerName }}</strong>
                                                     <div>
-                                                        <span>{{ $detailsCriteria[$outerIndex]['description'] }}</span>
-                                                    </div>
+                                                        <span>{{ $detailsCriteria[$outerIndex]['description'] ?? '' }}</span>
                                                     </div>
                                                 </td>
                                                 <td id="priority_{{ $outerIndex }}_{{ $innerIndex }}">Sama pentingnya</td>
                                                 <td> <strong>{{ $innerName }}</strong>
                                                     <div>
-                                                        <span>{{ $detailsCriteria[$innerIndex]['description'] }}</span>
+                                                        <span>{{ $detailsCriteria[$innerIndex]['description'] ?? '' }}</span>
                                                     </div>
+                                                </td>
                                                 <td>
                                                     <div class="form-group">
                                                         <label for="comparison_{{ $outerIndex }}_{{ $innerIndex }}">Perbandingan</label>
@@ -68,6 +68,7 @@
                                     @endforeach
                                 @endforeach
                             </tbody>
+                            
                         </table>
 
                         <button type="submit" class="btn btn-primary">Submit</button>

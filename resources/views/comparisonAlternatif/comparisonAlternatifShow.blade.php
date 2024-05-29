@@ -21,7 +21,7 @@
                                 <tbody>
                                     @foreach($criteriaMatrix as $i => $row)
                                         <tr>
-                                            <td>{{ $criteriaNames[$i] }}</td>
+                                            <td>{{ $criteriaNames[$i] ?? 'Undefined' }}</td>
                                             @foreach($row as $value)
                                                 <td>{{ number_format($value, 2) }}</td>
                                             @endforeach
@@ -61,8 +61,7 @@
                                 <tbody>
                                     @foreach($squaredMatrix as $i => $row)
                                         <tr>
-                                            {{-- {{ dd($squaredMatrix) }} --}}
-                                            <td>{{ $criteriaNames[$i] }}</td>
+                                            <td>{{ $criteriaNames[$i] ?? 'Undefined' }}</td>
                                             @foreach($row as $value)
                                                 <td>{{ number_format($value, 2) }}</td>
                                             @endforeach
@@ -89,12 +88,11 @@
                             </thead>
                             <tbody>
                                 @foreach($normalizedVector as $i => $value)
-                                <tr>
-                                    <td>{{ $criteriaNames[$i] }}</td>
-                                    <td>{{ number_format($value, 4) }}</td>
-                                    {{-- <td>{{ number_format(($value / $totalEigenvector) * 100, 2) }}%</td> --}}
-                                    <td>{{ number_format(($value * 100)) }}%</td>
-                                </tr>
+                                    <tr>
+                                        <td>{{ $criteriaNames[$i] ?? 'Undefined' }}</td>
+                                        <td>{{ number_format($value, 4) }}</td>
+                                        <td>{{ number_format($value * 100, 2) }}%</td>
+                                    </tr>
                                 @endforeach
                                 <tr>
                                     <td><strong>Lambda Max</strong></td>
@@ -121,7 +119,6 @@
                     <button class="btn btn-primary" onclick="window.location.href='/user/compare/alternatives/{{ $nextIndex }}'">Next</button>
                 </div>
             </div>
-            
         </div>
     </div>
 @endsection
