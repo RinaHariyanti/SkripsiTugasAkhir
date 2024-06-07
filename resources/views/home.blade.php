@@ -27,9 +27,19 @@
                                     @foreach ($criteriaNames as $innerIndex => $innerName)
                                         @if ($outerIndex < $innerIndex)
                                             <tr>
-                                                <td>{{ $outerName }}</td>
+                                                <td>{{ $outerName }}
+                                                    <div>
+                                                        <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="1">
+                                                        <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_1">1</label>
+                                                    </div>
+                                                </td>
                                                 <td id="priority_{{ $outerIndex }}_{{ $innerIndex }}">Sama pentingnya</td>
-                                                <td>{{ $innerName }}</td>
+                                                <td>{{ $innerName }}
+                                                    <div>                   
+                                                        <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="2">
+                                                        <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_2">2</label>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div class="form-group">
                                                         <label for="comparison_{{ $outerIndex }}_{{ $innerIndex }}">Perbandingan</label>
@@ -140,13 +150,24 @@
                 }
                 priorityCell.textContent = priorityText;
 
-                // Update matrix cell
-                var matrixCell = document.getElementById('matrixCell_' + outerIndex + '_' + innerIndex);
-                matrixCell.textContent = value;
+                
+                var radioButtons = document.getElementsByName('priority[' + outerIndex + '][' + innerIndex + ']');
+                var selectedValue;
+                for (var i = 0; i < radioButtons.length; i++) {
+                    if (radioButtons[i].checked) {
+                        selectedValue = radioButtons[i].value;
+                        break; // Keluar dari loop setelah menemukan radio button yang dipilih
+                    }
+                }
 
-                // If the comparison is reciprocal, update the reciprocal cell
-                var reciprocalCell = document.getElementById('matrixCell_' + innerIndex + '_' + outerIndex);
-                reciprocalCell.textContent = (1 / value).toFixed(2);
+                // Update comparison matrix
+                if (selectedValue == 1) {
+                    document.getElementById('matrixCell_' + outerIndex + '_' + innerIndex).textContent = value;
+                    document.getElementById('matrixCell_' + innerIndex + '_' + outerIndex).textContent = (1 / value).toFixed(2);
+                } else {
+                    document.getElementById('matrixCell_' + outerIndex + '_' + innerIndex).textContent = (1 / value).toFixed(2);
+                    document.getElementById('matrixCell_' + innerIndex + '_' + outerIndex).textContent = value;
+                }
             });
         });
     });

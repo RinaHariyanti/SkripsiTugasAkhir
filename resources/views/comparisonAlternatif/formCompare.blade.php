@@ -21,7 +21,6 @@
                 <div class="card-body">
                     <form action="/user/compare/alternatives/show/{{ $index }}" method="POST">
                         @csrf
-
                         <table class="table" id="comparisonTable">
                             <thead>
                                 <tr>
@@ -34,19 +33,27 @@
                             <tbody>
                                 @foreach ($alternatives as $outerIndex => $outerName)
                                     @foreach ($alternatives as $innerIndex => $innerName)
-                                        @if ($outerIndex != $innerIndex)
+                                        @if ($outerIndex < $innerIndex)
                                             <tr>
                                                 <td> <strong>{{ $outerName }}</strong>
                                                     <div>
-                                                        <span>{{ $detailsCriteria[$outerIndex]['description'] ?? '' }}</span>
+                                                        <span>{{ $detailsCriteria[$outerIndex]['description'] }}</span>
                                                     </div>
+                                                    <div>
+                                                        <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="1">
+                                                        <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_1">1</label>
+                                                    </div>
+                                                </div>
                                                 </td>
                                                 <td id="priority_{{ $outerIndex }}_{{ $innerIndex }}">Sama pentingnya</td>
                                                 <td> <strong>{{ $innerName }}</strong>
                                                     <div>
-                                                        <span>{{ $detailsCriteria[$innerIndex]['description'] ?? '' }}</span>
+                                                        <span>{{ $detailsCriteria[$innerIndex]['description'] }}</span>
                                                     </div>
-                                                </td>
+                                                    <div>                   
+                                                        <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="2">
+                                                        <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_2">2</label>
+                                                    </div>
                                                 <td>
                                                     <div class="form-group">
                                                         <label for="comparison_{{ $outerIndex }}_{{ $innerIndex }}">Perbandingan</label>
@@ -68,7 +75,6 @@
                                     @endforeach
                                 @endforeach
                             </tbody>
-                            
                         </table>
 
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -158,13 +164,22 @@
                 }
                 priorityCell.textContent = priorityText;
 
-                // Update matrix cell
-                var matrixCell = document.getElementById('matrixCell_' + outerIndex + '_' + innerIndex);
-                matrixCell.textContent = value;
-
-                // If the comparison is reciprocal, update the reciprocal cell
-                var reciprocalCell = document.getElementById('matrixCell_' + innerIndex + '_' + outerIndex);
-                reciprocalCell.textContent = (1 / value).toFixed(2);
+                var radioButtons = document.getElementsByName('priority[' + outerIndex + '][' + innerIndex + ']');
+                var selectedValue;
+                for (var i = 0; i < radioButtons.length; i++) {
+                    if (radioButtons[i].checked) {
+                        selectedValue = radioButtons[i].value;
+                        break; // Keluar dari loop setelah menemukan radio button yang dipilih
+                    }
+                }
+                var getComparisonValue = document.getElementById('comparison_' + outerIndex + '_' + innerIndex);
+                if(selectedValue == 1) {
+                    document.getElementById('matrixCell_' + outerIndex + '_' + innerIndex).textContent = value;
+                    document.getElementById('matrixCell_' + innerIndex + '_' + outerIndex).textContent = (1 / value).toFixed(2);
+                } else {
+                    document.getElementById('matrixCell_' + outerIndex + '_' + innerIndex).textContent = (1 / value).toFixed(2);
+                    document.getElementById('matrixCell_' + innerIndex + '_' + outerIndex).textContent = value;
+                }
             });
         });
     });

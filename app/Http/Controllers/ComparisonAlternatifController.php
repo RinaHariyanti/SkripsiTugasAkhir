@@ -166,7 +166,8 @@ class ComparisonAlternatifController extends Controller
 
     public function storeComparisonAlternatif(Request $request, $index)
     {
-        $comparisonData = $request->comparison;
+        $comparisonData = $request->all();
+
         $criteriaNames = Pesticide::all()->pluck('name');
         $criteriaCompare = Criteria::all()->pluck('name');
         $criteriaMatrix = $this->buildCriteriaMatrix($comparisonData, $criteriaNames);
@@ -235,9 +236,12 @@ class ComparisonAlternatifController extends Controller
         }
     }
 
-    protected function buildCriteriaMatrix($comparisonData, $criteriaNames)
+    protected function buildCriteriaMatrix($comparisonDatas, $criteriaNames)
     {
+        $comparisonData = $comparisonDatas['comparison'];
+        $comparisonPriority = $comparisonDatas['priority'];
         $criteriaMatrix = [];
+
         for ($i = 0; $i <= count($comparisonData); $i++) {
             $row = [];
             for ($j = 0; $j <= count($comparisonData); $j++) {
@@ -252,8 +256,13 @@ class ComparisonAlternatifController extends Controller
 
         foreach ($comparisonData as $outerIndex => $row) {
             foreach ($row as $innerIndex => $value) {
-                $criteriaMatrix[$outerIndex][$innerIndex] = $value;
-                $criteriaMatrix[$innerIndex][$outerIndex] = 1 / $value;
+                if ($comparisonPriority[$outerIndex][$innerIndex] == '1') {
+                    $criteriaMatrix[$outerIndex][$innerIndex] = $value;
+                    $criteriaMatrix[$innerIndex][$outerIndex] = 1 / $value;
+                } else {
+                    $criteriaMatrix[$outerIndex][$innerIndex] = 1 / $value;
+                    $criteriaMatrix[$innerIndex][$outerIndex] = $value;
+                }
             }
         }
         return $criteriaMatrix;

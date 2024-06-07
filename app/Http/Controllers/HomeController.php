@@ -42,7 +42,7 @@ class HomeController extends Controller
 
     public function storeComparison(Request $request)
     {
-        $comparisonData = $request->comparison;
+        $comparisonData = $request->all();
         $criteriaNames = Criteria::all()->pluck('name');
         $criteriaMatrix = $this->buildCriteriaMatrix($comparisonData, $criteriaNames);
         $consistency = $this->calculateConsistency($criteriaMatrix, $criteriaNames);
@@ -69,8 +69,10 @@ class HomeController extends Controller
         return view('comparison', $consistency);
     }
 
-    protected function buildCriteriaMatrix($comparisonData, $criteriaNames)
+    protected function buildCriteriaMatrix($comparisonDatas, $criteriaNames)
     {
+        $comparisonData = $comparisonDatas['comparison'];
+        $comparisonPriority = $comparisonDatas['priority'];
         $criteriaMatrix = [];
         for ($i = 0; $i <= count($comparisonData); $i++) {
             $row = [];
@@ -86,11 +88,15 @@ class HomeController extends Controller
 
         foreach ($comparisonData as $outerIndex => $row) {
             foreach ($row as $innerIndex => $value) {
-                $criteriaMatrix[$outerIndex][$innerIndex] = $value;
-                $criteriaMatrix[$innerIndex][$outerIndex] = 1 / $value;
+                if ($comparisonPriority[$outerIndex][$innerIndex] == '1') {
+                    $criteriaMatrix[$outerIndex][$innerIndex] = $value;
+                    $criteriaMatrix[$innerIndex][$outerIndex] = 1 / $value;
+                } else {
+                    $criteriaMatrix[$outerIndex][$innerIndex] = 1 / $value;
+                    $criteriaMatrix[$innerIndex][$outerIndex] = $value;
+                }
             }
         }
-
         return $criteriaMatrix;
     }
 
