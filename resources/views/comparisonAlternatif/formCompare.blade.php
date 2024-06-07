@@ -58,15 +58,15 @@
                                                     <div class="form-group">
                                                         <label for="comparison_{{ $outerIndex }}_{{ $innerIndex }}">Perbandingan</label>
                                                         <select class="form-control comparison-select" data-outer-index="{{ $outerIndex }}" data-inner-index="{{ $innerIndex }}" id="comparison_{{ $outerIndex }}_{{ $innerIndex }}" name="comparison[{{ $outerIndex }}][{{ $innerIndex }}]">
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
-                                                            <option value="8">8</option>
-                                                            <option value="9">9</option>
+                                                            <option value="1">Sama pentingnya</option>
+                                                            <option value="2">Antara sama dan sedikit lebih penting</option>
+                                                            <option value="3">Sedikit lebih penting</option>
+                                                            <option value="4">Antara sedikit lebih dan lebih penting</option>
+                                                            <option value="5">Lebih penting</option>
+                                                            <option value="6">Antara lebih dan sangat lebih penting</option>
+                                                            <option value="7">Sangat lebih penting</option>
+                                                            <option value="8">Antara sangat lebih dan mutlak lebih penting</option>
+                                                            <option value="9">Mutlak lebih penting</option>
                                                         </select>
                                                     </div>
                                                 </td>
