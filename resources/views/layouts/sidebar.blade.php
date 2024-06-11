@@ -14,7 +14,7 @@
         @else
             <div class="sidebar-brand-text mx-3"> GUEST </div>
         @endif
-        
+
         </a>
 
         <!-- Divider -->
@@ -30,17 +30,17 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
 
-        
+
         @if($userLogin->role == 'admin')
 
         <div class="sidebar-heading">
-            Calculate Result
+            Hasil Kalkulasi
         </div>
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('history') }}">
                 <i class="fas fa-fw fa-history"></i>
-                <span>History Users</span>
+                <span>Riwayat Perankingan User</span>
             </a>
         </li>
 
@@ -75,7 +75,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('criteria.index') }}">
                         <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Show Data Kriteria</span></a>
+                        <span>Data Kriteria</span></a>
                 </li>
 
                     <!-- Nav Item - Pages Collapse Menu -->
@@ -89,34 +89,34 @@
 
                 @if($userLogin->role == 'admin')
                     <div class="sidebar-heading">
-                        Other
+                        Lainnya
                     </div>
                 @else
                     <div class="sidebar-heading">
-                        Calculate
+                        Kalkulasi
                     </div>
                     <li class="nav-item">
                         <a class="nav-link" href={{ route('compare.criteria') }}>
                             <i class="fas fa-fw fa-calculator"></i>
-                            <span>Calculate Criteria</span></a>
+                            <span>Kalkulasi Kriteria</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/user/compare/alternatives/0">
                             <i class="fas fa-fw fa-chart-bar"></i>
-                            <span>Calculate Alternatif</span>
-                        </a>                        
+                            <span>Kalkulasi Alternatif</span>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href={{ route('history.latest') }} >
                             <i class="fas fa-fw fa-receipt"></i>
-                            <span>Rank (Latest)</span>
-                        </a>                        
+                            <span>Ranking</span>
+                        </a>
                     </li>
                 @endif
 
                 @if($userLogin->role == 'user')
                 <div class="sidebar-heading">
-                    Other
+                    Lainnya
                 </div>
                 @endif
                     <li class="nav-item">

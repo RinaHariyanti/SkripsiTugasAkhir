@@ -5,17 +5,17 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            @include('layouts.messages') 
-
+            @include('layouts.messages')
+            <br>
             <div class="card">
-                <div class="card-header">Edit Criteria</div>
+                <div class="card-header bg-primary text-white">Edit Kriteria</div>
                 <div class="card-body">
                     <form action="{{ route('criteria.update', $criterion->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
                         <div class="form-group">
-                            <label for="name">Name:</label>
+                            <label for="name">Nama:</label>
                             <input type="text" name="name" class="form-control" id="name" value="{{ $criterion->name }}" required>
                         </div>
 

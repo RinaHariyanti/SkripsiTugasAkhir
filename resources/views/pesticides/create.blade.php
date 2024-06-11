@@ -6,20 +6,21 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             @include('layouts.messages')
+            <br>
             <div class="card">
-                <div class="card-header bg-primary text-white">Create Pesticide</div>
+                <div class="card-header bg-primary text-white">Tambah Pestisida</div>
                 <div class="card-body">
                     <form action="{{ route('pesticides.store') }}" method="POST">
                         @csrf
 
                         <div class="form-group">
-                            <label for="name">Name:</label>
+                            <label for="name">Nama:</label>
                             <input type="text" name="name" class="form-control" id="name" required>
                         </div>
 
                         <hr>
 
-                        <h4 class="mb-3">Criteria:</h4>
+                        <h4 class="mb-3">Kriteria:</h4>
                         @foreach($criteria as $criterion)
                         <div class="form-group row">
                             <!-- Add hidden input for criterion ID -->
@@ -33,7 +34,7 @@
 
                         <hr>
 
-                        <button type="submit" class="btn btn-primary btn-block">Create</button>
+                        <button type="submit" class="btn btn-primary btn-block">Tambah</button>
                     </form>
                 </div>
             </div>

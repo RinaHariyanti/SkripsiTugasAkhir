@@ -16,7 +16,7 @@
                         >
                     @endif
                 @endforeach
-                
+
                 </div>
                 <div class="card-body">
                     <form action="/user/compare/alternatives/show/{{ $index }}" method="POST">
@@ -24,9 +24,9 @@
                         <table class="table" id="comparisonTable">
                             <thead>
                                 <tr>
-                                    <th>Kriteria 1</th>
-                                    <th>Prioritas Petani</th>
-                                    <th>Kriteria 2</th>
+                                    {{-- <th>Kriteria 1</th>
+                                    <th>Prioritas Petani</th> --}}
+                                    <th colspan="3">Pilih yang Lebih Penting</th>
                                     <th>Perbandingan</th>
                                 </tr>
                             </thead>
@@ -50,7 +50,7 @@
                                                     <div>
                                                         <span>{{ $detailsCriteria[$innerIndex]['description'] }}</span>
                                                     </div>
-                                                    <div>                   
+                                                    <div>
                                                         <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="2">
                                                         <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_2">2</label>
                                                     </div>
@@ -58,15 +58,15 @@
                                                     <div class="form-group">
                                                         <label for="comparison_{{ $outerIndex }}_{{ $innerIndex }}">Perbandingan</label>
                                                         <select class="form-control comparison-select" data-outer-index="{{ $outerIndex }}" data-inner-index="{{ $innerIndex }}" id="comparison_{{ $outerIndex }}_{{ $innerIndex }}" name="comparison[{{ $outerIndex }}][{{ $innerIndex }}]">
-                                                            <option value="1">Sama pentingnya</option>
-                                                            <option value="2">Antara sama dan sedikit lebih penting</option>
-                                                            <option value="3">Sedikit lebih penting</option>
-                                                            <option value="4">Antara sedikit lebih dan lebih penting</option>
-                                                            <option value="5">Lebih penting</option>
-                                                            <option value="6">Antara lebih dan sangat lebih penting</option>
-                                                            <option value="7">Sangat lebih penting</option>
-                                                            <option value="8">Antara sangat lebih dan mutlak lebih penting</option>
-                                                            <option value="9">Mutlak lebih penting</option>
+                                                            <option value="1">1 = Sama pentingnya</option>
+                                                            <option value="2">2 = Antara sama dan sedikit lebih penting</option>
+                                                            <option value="3">3 = Sedikit lebih penting</option>
+                                                            <option value="4">4 = Antara sedikit lebih dan lebih penting</option>
+                                                            <option value="5">5 = Lebih penting</option>
+                                                            <option value="6">6 = Antara lebih dan sangat lebih penting</option>
+                                                            <option value="7">7 = Sangat lebih penting</option>
+                                                            <option value="8">8 = Antara sangat lebih dan mutlak lebih penting</option>
+                                                            <option value="9">9 = Mutlak lebih penting</option>
                                                         </select>
                                                     </div>
                                                 </td>

@@ -11,10 +11,10 @@
 
                     <div class="row">
                         <div class="col-9">
-                            <h4>Criteria List</h4>
+                            <h4>List Kriteria</h4>
                         </div>
                         <div class="col-3 text-right">
-                            <a href={{ route('criteria.create') }} class="btn btn-primary">Add Criteria</a>
+                            <a href={{ route('criteria.create') }} class="btn btn-primary">Tambah Kriteria</a>
                         </div>
                     </div>
                 </div>
@@ -23,9 +23,9 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
+                                <th>Nama</th>
                                 <th>Jenis</th>
-                                <th>Actions</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,7 +40,7 @@
                                     <form action="{{ route('criteria.destroy', $criterion->id) }}" method="POST" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Hapus</button>
                                     </form>
                                 </td>
                             </tr>

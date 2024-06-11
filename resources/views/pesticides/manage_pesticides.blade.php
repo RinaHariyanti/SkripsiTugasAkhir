@@ -9,13 +9,13 @@
             <div class="card-body">
                 <div class="header row mb-3">
                     <div class="col">
-                        <h4><strong>List of Pesticides</strong></h4>
+                        <h4><strong>List Pestisida</strong></h4>
                     </div>
                     <div class="col text-right">
-                        <a href={{ route('pesticides.create') }} class="btn btn-primary">Add Pesticide</a>
+                        <a href={{ route('pesticides.create') }} class="btn btn-primary">Tambah Pestisida</a>
                     </div>
                 </div>
-                
+
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
@@ -23,7 +23,7 @@
                                 <th>Nama Pestisida</th>
                                 <th>Kriteria</th>
                                 <th>Spesifikasi</th>
-                                <th>Action</th> <!-- Tambah kolom action -->
+                                <th>Aksi</th> <!-- Tambah kolom action -->
                             </tr>
                         </thead>
                         <tbody>
@@ -46,7 +46,7 @@
                                                             <form action="{{ route('pesticides.destroy', $pesticide['id']) }}" method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
                                                             </form>
                                                         </div>
                                                     </div>
@@ -73,7 +73,7 @@
                                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                                 </form>
                                             </div>
-                                            
+
                                         </td>
                                     </tr>
                                 @endif

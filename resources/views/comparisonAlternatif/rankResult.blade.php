@@ -8,15 +8,15 @@
             <div class="card">
                 <div class="card-body">
                     <div class="header">
-                        <h4><strong>Final Result</strong></h4>
+                        <h4><strong>Perankingan</strong></h4>
                     </div>
                     @if (count($finalResult) > 0)
                     <table class="table table-bordered table-striped">
                         <thead class="bg-light">
                             <tr>
-                                <th>Rank</th>
-                                <th>Pesticide</th>
-                                <th>Result</th>
+                                <th>Ranking</th>
+                                <th>Nama Pestisida</th>
+                                <th>Nilai</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,7 +39,7 @@
                     @endif
                 </div>
             </div>
-            
+
         </div>
         <div class="col-md-3">
             <div class="card">
@@ -50,9 +50,9 @@
                     <table class="table table-bordered table-striped">
                         <thead class="bg-light">
                             <tr>
-                                <th>Rank</th>
-                                <th>Pesticide</th>
-                                <th>Result</th>
+                                <th>Ranking</th>
+                                <th>Nama Pestisida</th>
+                                <th>Nilai</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,7 +72,7 @@
                     </table>
                 </div>
             </div>
-            
+
         </div>
         <div class="col-md-3">
             <div class="card">
@@ -83,9 +83,9 @@
                     <table class="table table-bordered table-striped">
                         <thead class="bg-light">
                             <tr>
-                                <th>Rank</th>
-                                <th>Pesticide</th>
-                                <th>Result</th>
+                                <th>Ranking</th>
+                                <th>Nama Pestisida</th>
+                                <th>Nilai</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -105,7 +105,7 @@
                     </table>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>

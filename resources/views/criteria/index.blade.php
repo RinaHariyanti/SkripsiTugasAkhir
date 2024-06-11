@@ -11,11 +11,11 @@
 
                     <div class="row">
                         <div class="col-9">
-                            <h4>Criteria List</h4>
+                            <h4><strong>List Kriteria</strong></h4>
                         </div>
-                        <div class="col-3 text-right">
-                            <a href={{ route('criteria.create') }} class="btn btn-primary">Add Criteria</a>
-                        </div>
+                        {{-- <div class="col-3 text-right">
+                            <a href={{ route('criteria.create') }} class="btn btn-primary">Tambah Criteria</a>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="card-body">
@@ -23,7 +23,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
+                                <th>Nama</th>
                                 <th>Jenis</th>
                                 {{-- <th>Actions</th> --}}
                             </tr>
