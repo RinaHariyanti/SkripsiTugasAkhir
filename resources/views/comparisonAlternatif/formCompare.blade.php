@@ -3,8 +3,8 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header"> <strong> Compare {{ $firstCriteriaName }} </strong></div>
                 <div class="card-header">
@@ -26,7 +26,7 @@
                                 <tr>
                                     {{-- <th>Kriteria 1</th>
                                     <th>Prioritas Petani</th> --}}
-                                    <th colspan="3">Pilih yang Lebih Penting</th>
+                                    <th colspan="2">Pilih yang Lebih Penting</th>
                                     <th>Perbandingan</th>
                                 </tr>
                             </thead>
@@ -40,12 +40,11 @@
                                                         <span>{{ $detailsCriteria[$outerIndex]['description'] }}</span>
                                                     </div>
                                                     <div>
-                                                        <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="1">
+                                                        <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="1" checked>
                                                         <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_1">1</label>
                                                     </div>
                                                 </div>
                                                 </td>
-                                                <td id="priority_{{ $outerIndex }}_{{ $innerIndex }}">Sama pentingnya</td>
                                                 <td> <strong>{{ $innerName }}</strong>
                                                     <div>
                                                         <span>{{ $detailsCriteria[$innerIndex]['description'] }}</span>
@@ -71,6 +70,12 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                            <tr class="priority-description">
+                                                <td colspan="3" class="text-center">
+                                                    <span> <b> {{ $outerName }} & {{ $innerName }}</b></span>: 
+                                                    <span id="priority_{{ $outerIndex }}_{{ $innerIndex }}"> <b> Sama pentingnya</b></span>
+                                                </td>
+                                            </tr>
                                         @endif
                                     @endforeach
                                 @endforeach
@@ -82,7 +87,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        {{-- <div class="col-md-6">
             <div class="card">
                 <div class="card-header">Matriks Perbandingan</div>
                 <div class="card-body">
@@ -114,7 +119,7 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 @endsection
@@ -184,3 +189,9 @@
         });
     });
 </script>
+<style>
+    .priority-description {
+        background-color: #dae2ff;
+    }
+</style>
+

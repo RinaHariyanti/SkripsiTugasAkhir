@@ -5,8 +5,8 @@
 
 @include('layouts.messages')
 <div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-7">
             <div class="card">
                 <div class="card-header">{{ __('Pairwise Comparison') }}</div>
                 <div class="card-body">
@@ -16,9 +16,7 @@
                         <table class="table" id="comparisonTable">
                             <thead>
                                 <tr>
-                                    {{-- <th>Kriteria 1</th>
-                                    <th>Prioritas Petani</th> --}}
-                                    <th colspan="3">Pilih Kriteria yang Lebih Penting</th>
+                                    <th colspan="2">Pilih Kriteria yang Lebih Penting</th>
                                     <th>Perbandingan</th>
                                 </tr>
                             </thead>
@@ -29,11 +27,11 @@
                                             <tr>
                                                 <td>{{ $outerName }}
                                                     <div>
-                                                        <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="1">
+                                                        <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="1" checked>
                                                         <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_1">1</label>
                                                     </div>
                                                 </td>
-                                                <td id="priority_{{ $outerIndex }}_{{ $innerIndex }}">Sama pentingnya</td>
+                                                
                                                 <td>{{ $innerName }}
                                                     <div>
                                                         <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="2">
@@ -44,7 +42,7 @@
                                                     <div class="form-group">
                                                         <label for="comparison_{{ $outerIndex }}_{{ $innerIndex }}">Perbandingan</label>
                                                         <select class="form-control comparison-select" data-outer-index="{{ $outerIndex }}" data-inner-index="{{ $innerIndex }}" id="comparison_{{ $outerIndex }}_{{ $innerIndex }}" name="comparison[{{ $outerIndex }}][{{ $innerIndex }}]">
-                                                            <option value="1">1 = Sama pentingnya</option>
+                                                            <option value="1" selected>1 = Sama pentingnya</option>
                                                             <option value="2">2 = Antara sama dan sedikit lebih penting</option>
                                                             <option value="3">3 = Sedikit lebih penting</option>
                                                             <option value="4">4 = Antara sedikit lebih dan lebih penting</option>
@@ -57,6 +55,12 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                            <tr class="priority-description">
+                                                <td colspan="3" class="text-center">
+                                                    <span> <b> {{ $outerName }} & {{ $innerName }}</b></span>: 
+                                                    <span id="priority_{{ $outerIndex }}_{{ $innerIndex }}"> <b> Sama pentingnya</b></span>
+                                                </td>
+                                            </tr>
                                         @endif
                                     @endforeach
                                 @endforeach
@@ -65,39 +69,6 @@
 
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">Matriks Perbandingan</div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                @foreach ($criteriaNames as $index => $name)
-                                    <th>{{ $name }}</th>
-                                @endforeach
-                            </tr>
-                        </thead>
-                        <tbody id="comparisonMatrixBody">
-                            @foreach ($criteriaNames as $outerIndex => $outerName)
-                                <tr>
-                                    <td>{{ $outerName }}</td>
-                                    @foreach ($criteriaNames as $innerIndex => $innerName)
-                                        <td>
-                                            @if ($outerIndex == $innerIndex)
-                                                1
-                                            @else
-                                                <span id="matrixCell_{{ $outerIndex }}_{{ $innerIndex }}">0</span>
-                                            @endif
-                                        </td>
-                                    @endforeach
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
@@ -150,13 +121,12 @@
                 }
                 priorityCell.textContent = priorityText;
 
-
                 var radioButtons = document.getElementsByName('priority[' + outerIndex + '][' + innerIndex + ']');
                 var selectedValue;
                 for (var i = 0; i < radioButtons.length; i++) {
                     if (radioButtons[i].checked) {
                         selectedValue = radioButtons[i].value;
-                        break; // Keluar dari loop setelah menemukan radio button yang dipilih
+                        break; // Exit the loop after finding the selected radio button
                     }
                 }
 
@@ -172,3 +142,9 @@
         });
     });
 </script>
+
+<style>
+    .priority-description {
+        background-color: #f9f9f9;
+    }
+</style>

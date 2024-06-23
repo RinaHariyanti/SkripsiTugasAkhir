@@ -72,8 +72,14 @@ class ComparisonAlternatifController extends Controller
         if (count($formattedData) > 0) {
             return redirect('/user/compare/results/' . $formattedData[0]['group_id']);
         } else {
-            return redirect('/user/compare/criteria')->with('error', 'Does not have any comparison data');
+            $finalResult = [];
+            return view('comparisonAlternatif.rankResult', compact('finalResult'));
         }
+        // if (count($formattedData) > 0) {
+        //     return redirect('/user/compare/results/' . $formattedData[0]['group_id']);
+        // } else {
+        //     return redirect('/user/compare/criteria')->with('error', 'Does not have any comparison data');
+        // }
     }
 
 
@@ -458,7 +464,6 @@ class ComparisonAlternatifController extends Controller
         usort($finalResult, function ($a, $b) {
             return $b['Data'] <=> $a['Data'];
         });
-        Log::info($finalResult);
 
         return view('comparisonAlternatif.rankResult', compact('finalResult', 'combinedDataBenefit', 'combinedDataCost'));
     }

@@ -4,13 +4,14 @@
 @section('content')
 <div class="container-fluid">
     <div class="row mt-2">
-        <div class="col-md-6">
+        <div class="col-md-8">
+            
+            @if (count($finalResult) > 0)
             <div class="card">
                 <div class="card-body">
                     <div class="header">
                         <h4><strong>Perankingan</strong></h4>
                     </div>
-                    @if (count($finalResult) > 0)
                     <table class="table table-bordered table-striped">
                         <thead class="bg-light">
                             <tr>
@@ -34,14 +35,16 @@
                             @endforeach
                         </tbody>
                     </table>
-                    @else
-                    <p>No final result data available.</p>
-                    @endif
                 </div>
             </div>
+            @else 
+            <div class="alert alert-warning mt-3">  
+                Data perbandingan masih kosong.
+            </div>
+            @endif
 
         </div>
-        <div class="col-md-3">
+        {{-- <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
                     <div class="header">
@@ -106,7 +109,7 @@
                 </div>
             </div>
 
-        </div>
+        </div> --}}
     </div>
 </div>
 @endsection
