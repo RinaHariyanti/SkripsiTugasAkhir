@@ -4,7 +4,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center mt-4">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header"> <strong> Compare {{ $firstCriteriaName }} </strong></div>
                 <div class="card-header">
@@ -35,7 +35,7 @@
                                     @foreach ($alternatives as $innerIndex => $innerName)
                                         @if ($outerIndex < $innerIndex)
                                             <tr>
-                                                <td> <strong>{{ $outerName }}</strong>
+                                                <td> <strong id="priorityName_{{ $outerIndex }}_{{ $innerIndex }}">{{ $outerName }}</strong>
                                                     <div>
                                                         <span>{{ $detailsCriteria[$outerIndex]['description'] }}</span>
                                                     </div>
@@ -45,7 +45,7 @@
                                                     </div>
                                                 </div>
                                                 </td>
-                                                <td> <strong>{{ $innerName }}</strong>
+                                                <td> <strong id="priorityName_{{ $innerIndex }}_{{ $outerIndex }}">{{ $innerName }}</strong>
                                                     <div>
                                                         <span>{{ $detailsCriteria[$innerIndex]['description'] }}</span>
                                                     </div>
@@ -72,8 +72,7 @@
                                             </tr>
                                             <tr class="priority-description">
                                                 <td colspan="3" class="text-center">
-                                                    <span> <b> {{ $outerName }} & {{ $innerName }}</b></span>: 
-                                                    <span id="priority_{{ $outerIndex }}_{{ $innerIndex }}"> <b> Sama pentingnya</b></span>
+                                                    <span id="priority_{{ $outerIndex }}_{{ $innerIndex }}"> <b></b></span>
                                                 </td>
                                             </tr>
                                         @endif
@@ -87,7 +86,7 @@
                 </div>
             </div>
         </div>
-        {{-- <div class="col-md-6">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">Matriks Perbandingan</div>
                 <div class="card-body">
@@ -119,7 +118,7 @@
                     </table>
                 </div>
             </div>
-        </div> --}}
+        </div>
     </div>
 </div>
 @endsection
@@ -178,6 +177,16 @@
                     }
                 }
                 var getComparisonValue = document.getElementById('comparison_' + outerIndex + '_' + innerIndex);
+                var descriptionCell = document.getElementById('priority_' + outerIndex + '_' + innerIndex);
+                var outerName = document.getElementById('priorityName_' + outerIndex + '_' + innerIndex).textContent;
+                var innerName = document.getElementById('priorityName_' + innerIndex + '_' + outerIndex).textContent;
+                
+                // Update description
+                if (selectedValue == 2) {
+                    descriptionCell.innerHTML = '<b>' + innerName + '</b> ' + priorityText + ' <b>' + outerName + '</b>';
+                } else {
+                    descriptionCell.innerHTML = '<b>' + outerName + '</b> ' + priorityText + ' <b>' + innerName + '</b>';
+                }
                 if(selectedValue == 1) {
                     document.getElementById('matrixCell_' + outerIndex + '_' + innerIndex).textContent = value;
                     document.getElementById('matrixCell_' + innerIndex + '_' + outerIndex).textContent = (1 / value).toFixed(2);

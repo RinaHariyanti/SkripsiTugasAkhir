@@ -6,7 +6,7 @@
 @include('layouts.messages')
 <div class="container-fluid">
     <div class="row justify-content-center mt-4">
-        <div class="col-md-7">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">{{ __('Pairwise Comparison') }}</div>
                 <div class="card-body">
@@ -25,14 +25,16 @@
                                     @foreach ($criteriaNames as $innerIndex => $innerName)
                                         @if ($outerIndex < $innerIndex)
                                             <tr>
-                                                <td>{{ $outerName }}
+                                                <td>
+                                                    <span id = "priorityName_{{ $outerIndex }}_{{ $innerIndex }}">{{ $outerName }}</span>
                                                     <div>
                                                         <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="1" checked>
                                                         <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_1">1</label>
                                                     </div>
                                                 </td>
                                                 
-                                                <td>{{ $innerName }}
+                                                <td >
+                                                    <span id = "priorityName_{{ $innerIndex }}_{{ $outerIndex }}">{{ $innerName }}</span>
                                                     <div>
                                                         <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="2">
                                                         <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_2">2</label>
@@ -57,8 +59,7 @@
                                             </tr>
                                             <tr class="priority-description">
                                                 <td colspan="3" class="text-center">
-                                                    <span> <b> {{ $outerName }} & {{ $innerName }}</b></span>: 
-                                                    <span id="priority_{{ $outerIndex }}_{{ $innerIndex }}"> <b> Sama pentingnya</b></span>
+                                                    <span id="priority_{{ $outerIndex }}_{{ $innerIndex }}"> <b></b></span>
                                                 </td>
                                             </tr>
                                         @endif
@@ -72,6 +73,40 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Matriks Perbandingan</div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                @foreach ($criteriaNames as $index => $name)
+                                    <th>{{ $name }}</th>
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody id="comparisonMatrixBody">
+                            @foreach ($criteriaNames as $outerIndex => $outerName)
+                                <tr>
+                                    <td>{{ $outerName }}</td>
+                                    @foreach ($criteriaNames as $innerIndex => $innerName)
+                                        <td>
+                                            @if ($outerIndex == $innerIndex)
+                                                1
+                                            @else
+                                                <span id="matrixCell_{{ $outerIndex }}_{{ $innerIndex }}">0</span>
+                                            @endif
+                                        </td>
+                                    @endforeach
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 @endsection
@@ -128,6 +163,17 @@
                         selectedValue = radioButtons[i].value;
                         break; // Exit the loop after finding the selected radio button
                     }
+                }
+
+                var descriptionCell = document.getElementById('priority_' + outerIndex + '_' + innerIndex);
+                var outerName = document.getElementById('priorityName_' + outerIndex + '_' + innerIndex).textContent;
+                var innerName = document.getElementById('priorityName_' + innerIndex + '_' + outerIndex).textContent;
+                
+                // Update description
+                if (selectedValue == 2) {
+                    descriptionCell.innerHTML = '<b>' + innerName + '</b> ' + priorityText + ' <b>' + outerName + '</b>';
+                } else {
+                    descriptionCell.innerHTML = '<b>' + outerName + '</b> ' + priorityText + ' <b>' + innerName + '</b>';
                 }
 
                 // Update comparison matrix
