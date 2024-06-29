@@ -7,7 +7,7 @@
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('pesticides.dashboard') }}">
             <div class="sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-laugh-wink"></i>
+                <i class="fa-solid fa-pepper-hot"></i>
             </div>
             @if($userLogin->role == 'admin')
             <div class="sidebar-brand-text mx-3"> ADMIN </div>
@@ -23,7 +23,7 @@
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
             <a class="nav-link" href="{{ route('pesticides.dashboard') }}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <i class="fa-solid fa-house"></i>
                 <span>Home</span></a>
         </li>
 
@@ -51,7 +51,7 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('pesticides.dashboard') }}">
-                <i class="fas fa-fw fa-cog"></i>
+                <i class="fa-solid fa-database"></i>
                 <span>Data Pestisida</span>
             </a>
         </li>
@@ -59,8 +59,8 @@
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('pesticides.home') }}">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Manage Data Pestisida</span>
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>Kelola Data Pestisida</span>
                 </a>
             </li>
                 <!-- Divider -->
@@ -74,15 +74,15 @@
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('criteria.index') }}">
-                        <i class="fas fa-fw fa-chart-area"></i>
+                        <i class="fa-solid fa-database"></i>
                         <span>Data Kriteria</span></a>
                 </li>
 
                     <!-- Nav Item - Pages Collapse Menu -->
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('criteria.manage') }}">
-                            <i class="fas fa-fw fa-folder"></i>
-                            <span>Manage Data Kriteria</span>
+                            <i class="fa-solid fa-list-check"></i>
+                            <span>Kelola Data Kriteria</span>
                         </a>
                     </li>
                 @endif
@@ -102,13 +102,13 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/user/compare/alternatives/0">
-                            <i class="fas fa-fw fa-chart-bar"></i>
+                            <i class="fas fa-fw fa-calculator"></i>
                             <span>Kalkulasi Alternatif</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href={{ route('history.latest') }} >
-                            <i class="fas fa-fw fa-receipt"></i>
+                            <i class="fa-solid fa-ranking-star"></i>
                             <span>Ranking</span>
                         </a>
                     </li>
@@ -121,7 +121,7 @@
                 @endif
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">
-                            <i class="fas fa-fw fa-chart-area"></i>
+                            <i class="fa-solid fa-right-from-bracket"></i>
                             <span>Logout</span></a>
                     </li>
 

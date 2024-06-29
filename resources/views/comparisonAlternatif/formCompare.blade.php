@@ -180,12 +180,12 @@
                 var descriptionCell = document.getElementById('priority_' + outerIndex + '_' + innerIndex);
                 var outerName = document.getElementById('priorityName_' + outerIndex + '_' + innerIndex).textContent;
                 var innerName = document.getElementById('priorityName_' + innerIndex + '_' + outerIndex).textContent;
-                
+
                 // Update description
                 if (selectedValue == 2) {
-                    descriptionCell.innerHTML = '<b>' + innerName + '</b> ' + priorityText + ' <b>' + outerName + '</b>';
+                    descriptionCell.innerHTML = '<b>' + innerName + '</b> ' + priorityText + ' <b>'+ 'dari ' + outerName + '</b>';
                 } else {
-                    descriptionCell.innerHTML = '<b>' + outerName + '</b> ' + priorityText + ' <b>' + innerName + '</b>';
+                    descriptionCell.innerHTML = '<b>' + outerName + '</b> ' + priorityText + ' <b>' +  'dari ' + innerName + '</b>';
                 }
                 if(selectedValue == 1) {
                     document.getElementById('matrixCell_' + outerIndex + '_' + innerIndex).textContent = value;

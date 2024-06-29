@@ -32,7 +32,6 @@
                                                         <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_1">1</label>
                                                     </div>
                                                 </td>
-                                                
                                                 <td >
                                                     <span id = "priorityName_{{ $innerIndex }}_{{ $outerIndex }}">{{ $innerName }}</span>
                                                     <div>
@@ -168,12 +167,12 @@
                 var descriptionCell = document.getElementById('priority_' + outerIndex + '_' + innerIndex);
                 var outerName = document.getElementById('priorityName_' + outerIndex + '_' + innerIndex).textContent;
                 var innerName = document.getElementById('priorityName_' + innerIndex + '_' + outerIndex).textContent;
-                
+
                 // Update description
                 if (selectedValue == 2) {
-                    descriptionCell.innerHTML = '<b>' + innerName + '</b> ' + priorityText + ' <b>' + outerName + '</b>';
+                    descriptionCell.innerHTML = 'kriteria ' +'<b>' + innerName + '</b> ' + priorityText + ' <b>' + ' dari kriteria '+ outerName + '</b>';
                 } else {
-                    descriptionCell.innerHTML = '<b>' + outerName + '</b> ' + priorityText + ' <b>' + innerName + '</b>';
+                    descriptionCell.innerHTML = 'kriteria ' +'<b>' + outerName + '</b> ' + priorityText + ' <b>' + ' dari kriteria '+ innerName + '</b>';
                 }
 
                 // Update comparison matrix
