@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="row mt-2">
         <div class="col-md-8">
-            
+
             @if (count($finalResult) > 0)
             <div class="card">
                 <div class="card-body">
@@ -37,9 +37,10 @@
                     </table>
                 </div>
             </div>
-            @else 
-            <div class="alert alert-warning mt-3">  
-                Data perbandingan masih kosong.
+            @else
+            <div class="alert alert-warning mt-3">
+                Data Ranking Masih kosong.<br>
+                Lakukan Perbandingan Kriteria dan Alternatif Terlebih Dahulu!!
             </div>
             @endif
 

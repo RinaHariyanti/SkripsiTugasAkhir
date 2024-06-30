@@ -6,7 +6,7 @@
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('pesticides.dashboard') }}">
-            <div class="sidebar-brand-icon rotate-n-15">
+            <div class="sidebar-brand-icon rotate-n-50">
                 <i class="fa-solid fa-pepper-hot"></i>
             </div>
             @if($userLogin->role == 'admin')
@@ -152,6 +152,9 @@
                 <!-- Sidebar Message -->
                 <div class="sidebar-card d-none d-lg-flex">
                     {{-- <img class="sidebar-card-illustration mb-2" src="/img/logo.png" alt="..."> --}}
+                    <h3 style="color:rgb(71, 152, 42); font-weight:bolder;">
+                        SISTEM PENDUKUNG KEPUTUSAN REKOMENDASI PESTISIDA TERBAIK UNTUK TANAMAN CABAI
+                    </h3>
                 </div>
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
