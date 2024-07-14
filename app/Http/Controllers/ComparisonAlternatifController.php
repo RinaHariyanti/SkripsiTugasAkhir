@@ -188,9 +188,11 @@ class ComparisonAlternatifController extends Controller
         $nextIndex = $index + 1;
         Log::info('Next index' . $nextIndex .  count($criteriaCompare));
         // Redirect to the next index or final submission page
+        // dd($nextIndex, count($criteriaCompare));
         if ($nextIndex < count($criteriaCompare)) {
             return view('comparisonAlternatif.comparisonAlternatifShow', $consistency, compact('nextIndex'));
         } else {
+            // dd('info');
             $criteria_data = null;
             $mergedData = [];
             for ($i = 0; $i < count($criteriaCompare); $i++) {
@@ -231,6 +233,7 @@ class ComparisonAlternatifController extends Controller
 
                 DB::commit(); // Commit transaction
             } catch (\Exception $e) {
+                // dd( $e->getMessage());
                 DB::rollback(); // Rollback transaction on error
                 Log::error('Failed to save data', ['error' => $e->getMessage()]);
                 // Handle error
@@ -335,12 +338,14 @@ class ComparisonAlternatifController extends Controller
 
     protected function calculateCR($CI, $criteriaMatrix)
     {
-        $IR = [0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49];
-        $n = count($criteriaMatrix);
+        //tambah IR -20
+        $IR = [0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51, 1.48, 1.56, 1.57, 1.59, 1.60, 1.61, 1.62, 1.63, 1.63];
+        $n = count($criteriaMatrix) - 1 ;
         // Periksa apakah indeks $n berada dalam rentang yang valid
         if ($n >= 0 && $n < count($IR)) {
             return $CI / $IR[$n];
         } else {
+            // dd('sini');
             // Handle jika indeks di luar rentang
             return 0; // Atau lakukan tindakan lain sesuai kebutuhan aplikasi Anda
         }
@@ -379,6 +384,8 @@ class ComparisonAlternatifController extends Controller
             }
         }
 
+        // dd($indexCost);
+        //kode ini problem
         foreach ($comparisonAlternatif as $index => $comparison) {
             if (in_array($index, $indexBenefit)) {
                 $resultBenefit[] = [
@@ -395,6 +402,7 @@ class ComparisonAlternatifController extends Controller
 
         $valueWhileBenefit = [];
         $valueWhileCost = [];
+        // dd($resultBenefit);
         for ($i = 0; $i < count($resultBenefit); $i++) {
             $resultBenefit[$i]['eigenvector'] = json_decode($resultBenefit[$i]['eigenvector']);
             for ($j = 0; $j < count($resultBenefit[$i]['eigenvector']); $j++) {
@@ -411,6 +419,7 @@ class ComparisonAlternatifController extends Controller
 
         $sumResultBenefit = [];
         $sumResultCost = [];
+        // dd($valueWhileBenefit);
         for ($i = 0; $i < count($valueWhileBenefit[0]); $i++) {
             $sum = 0;
             for ($j = 0; $j < count($valueWhileBenefit); $j++) {

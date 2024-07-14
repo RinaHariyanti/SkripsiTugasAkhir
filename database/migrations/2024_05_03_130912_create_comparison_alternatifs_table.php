@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('comparison_alternatifs', function (Blueprint $table) {
             $table->id();
-            $table->string('criteria_name');
+            $table->longText('criteria_name');
             $table->json('comparison_data');
             $table->json('eigenvector')->nullable();
             $table->unsignedBigInteger('criteria_id');

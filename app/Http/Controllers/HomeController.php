@@ -247,8 +247,12 @@ class HomeController extends Controller
 
     protected function calculateCR($CI, $criteriaMatrix)
     {
-        $IR = [0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49];
-        $n = count($criteriaMatrix);
+        // dd($criteriaMatrix);
+        //jumlah criteriaMatrix = 6
+        //array IR mulai dari angka 0 jadi 6-1
+        $IR = [0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51, 1.48, 1.56, 1.57, 1.59, 1.60, 1.61, 1.62, 1.63, 1.63];
+        $n = count($criteriaMatrix)-1;
+        // dd($n);
         return $CI / $IR[$n];
     }
 }
