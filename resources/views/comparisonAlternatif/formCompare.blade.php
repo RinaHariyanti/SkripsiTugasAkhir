@@ -41,7 +41,7 @@
                                                     </div>
                                                     <div>
                                                         <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="1" checked>
-                                                        <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_1">1</label>
+                                                        <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_1"></label>
                                                     </div>
                                                 </div>
                                                 </td>
@@ -51,7 +51,7 @@
                                                     </div>
                                                     <div>
                                                         <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="2">
-                                                        <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_2">2</label>
+                                                        <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_2"></label>
                                                     </div>
                                                 <td>
                                                     <div class="form-group">

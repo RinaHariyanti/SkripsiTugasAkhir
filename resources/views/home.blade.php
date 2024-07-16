@@ -29,14 +29,14 @@
                                                     <span id = "priorityName_{{ $outerIndex }}_{{ $innerIndex }}">{{ $outerName }}</span>
                                                     <div>
                                                         <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="1" checked>
-                                                        <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_1">1</label>
+                                                        <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_1"></label>
                                                     </div>
                                                 </td>
                                                 <td >
                                                     <span id = "priorityName_{{ $innerIndex }}_{{ $outerIndex }}">{{ $innerName }}</span>
                                                     <div>
                                                         <input type="radio" name="priority[{{ $outerIndex }}][{{ $innerIndex }}]" value="2">
-                                                        <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_2">2</label>
+                                                        <label for="priority_{{ $outerIndex }}_{{ $innerIndex }}_2"></label>
                                                     </div>
                                                 </td>
                                                 <td>
