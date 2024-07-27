@@ -32,9 +32,13 @@
                                 <td>{{ $data['Name'] }}</td>
                                 <td>{{ $data['Data'] }}</td>
                             </tr>
+                            @if (count($finalResult) > 0)
+                        <p style="font-size: large; color:black">Pestisida {{ $data['Name'] }} menjadi pestisida terbaik {{ $index + 1 }} dengan nilai {{ $data['Data']}} </p>
+                        @endif
                             @endforeach
                         </tbody>
                     </table>
+                    {{-- <h4>Pestisida {{ $data['Name'] }} menjadi pestisida terbaik {{ $index + 1 }} dengan nilai {{ $data['Data'] }} </h4> --}}
                 </div>
             </div>
             @else
@@ -43,7 +47,6 @@
                 Lakukan Perbandingan Kriteria dan Alternatif Terlebih Dahulu!!
             </div>
             @endif
-
         </div>
         {{-- <div class="col-md-3">
             <div class="card">
